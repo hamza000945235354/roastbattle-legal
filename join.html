@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join my Roast Battle</title>
+<meta property="og:title" content="I challenge you to a Roast Battle 🔥">
+<meta property="og:description" content="Tap to join my private room. Winner takes the coins.">
+<style>
+  :root { --bg:#0F1115; --card:#1C2029; --tx:#F8FAFC; --mut:#A7AFBE; --red:#E53935; }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; background:var(--bg); color:var(--tx);
+         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         display:flex; align-items:center; justify-content:center; padding:16px; }
+  .card { width:100%; max-width:380px; background:var(--card); border-radius:20px; padding:28px 22px; text-align:center; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  p { color:var(--mut); margin:0 0 18px; line-height:1.5; font-size:15px; }
+  .code { font-size:40px; font-weight:800; letter-spacing:8px; margin:6px 0 22px; }
+  a.btn { display:block; padding:15px; border-radius:12px; font-weight:700; text-decoration:none; font-size:16px; margin-top:10px; }
+  .primary { background:var(--red); color:#fff; }
+  .secondary { background:transparent; color:var(--tx); border:1.5px solid #2E3440; }
+  small { display:block; color:var(--mut); margin-top:18px; font-size:12.5px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>You've been challenged 🔥</h1>
+  <p>Your friend opened a private Roast Battle room. Join with this code:</p>
+  <div class="code" id="code">------</div>
+  <a class="btn primary" id="open" href="#">Open in Roast Battle</a>
+  <a class="btn secondary" id="store" href="https://play.google.com/store/apps/details?id=com.hamzalabs.roastbattle">Get the app on Google Play</a>
+  <small>Already have the app? Tap "Open". New here? Install it, sign in, then open this link again.</small>
+</div>
+<script>
+  var code = (new URLSearchParams(location.search).get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+  document.getElementById('code').textContent = code || '------';
+  var store = 'https://play.google.com/store/apps/details?id=com.hamzalabs.roastbattle';
+  var intent = 'intent://join/' + code + '#Intent;scheme=roastbattle;package=com.hamzalabs.roastbattle;S.browser_fallback_url=' + encodeURIComponent(store) + ';end';
+  var deep = 'roastbattle://join/' + code;
+  var android = /Android/i.test(navigator.userAgent);
+  var open = document.getElementById('open');
+  open.href = android ? intent : deep;
+  // Try once automatically on Android; the button stays for a second try.
+  if (android && code) { setTimeout(function () { location.href = intent; }, 300); }
+</script>
+</body>
+</html>
